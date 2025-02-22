@@ -1,6 +1,7 @@
+from httpx import HTTPTransport
 from swiftshadow import QuickProxy
-from yars.yars import YARS
-from yars.utils import export_to_json
+
+from yars2.client import RedditScraper
 
 SEARCH_TERMS = ["Udlændinge"]
 
@@ -8,6 +9,12 @@ proxy = QuickProxy()
 if proxy is None:
     exit(1)
 
-yars = YARS(proxy=proxy.as_requests_dict())
-search_result = yars.search_reddit(SEARCH_TERMS[0], limit=100, after="t3_t85h9k")
-export_to_json(search_result)
+transport = {
+    f"{proxy.protocol}://": HTTPTransport(
+        proxy=proxy.as_string(),
+        retries=5,
+    ),
+}
+scraper = RedditScraper(mounts=transport)
+for term in SEARCH_TERMS:
+    search_result = scraper.search(SEARCH_TERMS[0], limit=100)
