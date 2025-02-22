@@ -1,13 +1,13 @@
 from httpx import HTTPTransport
 from swiftshadow import QuickProxy
 
-from yars2.client import RedditScraper
+from reddit_scraper.client import RedditScraper
 
-SEARCH_TERMS = ["Udlændinge"]
+SEARCH_TERMS = ["Invandrere", "Migranter", "Flygtninge", "Asylansøgere", ]
 
 proxy = QuickProxy()
 if proxy is None:
-    exit(1)
+    exit("No proxy available.")
 
 transport = {
     f"{proxy.protocol}://": HTTPTransport(

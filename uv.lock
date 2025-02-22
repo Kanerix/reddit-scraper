@@ -1,5 +1,5 @@
 version = 1
-requires-python = ">=3.13"
+requires-python = "==3.13.*"
 
 [[package]]
 name = "aiofiles"
@@ -682,8 +682,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "pydantic", specifier = ">=2.10.6" },
+    { name = "httpx", specifier = "==0.28.*" },
+    { name = "pydantic", specifier = "==2.10.*" },
     { name = "requests", specifier = "==2.32.*" },
     { name = "swiftshadow", specifier = "==2.1.*" },
 ]

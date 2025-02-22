@@ -3,7 +3,7 @@ name = "redis-scraper"
 version = "0.1.0"
 description = "Reddit scraper inspired by the YARS scraper."
 readme = "README.md"
-requires-python = "==3.13"
+requires-python = "==3.13.*"
 dependencies = [
     "httpx==0.28.*",
     "pydantic==2.10.*",
