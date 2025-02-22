@@ -19,6 +19,10 @@ class RedditListingData(BaseModel):
 
 class RedditChildren(BaseModel):
     kind: str
+    data: RedditChildrenData
+
+
+class RedditChildrenData(BaseModel):
     permalink: str
     title: str
     author: str

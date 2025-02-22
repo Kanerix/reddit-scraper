@@ -1,9 +1,10 @@
+from pprint import pprint
 from httpx import HTTPTransport
 from swiftshadow import QuickProxy
 
 from reddit_scraper.client import RedditScraper
 
-SEARCH_TERMS = ["Invandrere", "Migranter", "Flygtninge", "Asylansøgere", ]
+SEARCH_TERMS = ["Invandrere", "Migranter", "Flygtninge", "Asylansøgere"]
 
 proxy = QuickProxy()
 if proxy is None:
@@ -18,3 +19,4 @@ transport = {
 scraper = RedditScraper(mounts=transport)
 for term in SEARCH_TERMS:
     search_result = scraper.search(SEARCH_TERMS[0], limit=100)
+    pprint(search_result.model_dump())

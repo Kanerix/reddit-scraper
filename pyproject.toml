@@ -1,7 +1,7 @@
 [project]
 name = "redis-scraper"
 version = "0.1.0"
-description = "Reddit scraper inspired by the YARS scraper."
+description = "Reddit scraper."
 readme = "README.md"
 requires-python = "==3.13.*"
 dependencies = [
