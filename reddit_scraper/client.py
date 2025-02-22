@@ -55,9 +55,7 @@ class RedditScraper(Client):
         res = self.get(url, params=params)
         res.raise_for_status()
 
-        res_json = res.json()
-
-        return RedditListing.model_validate(res_json)
+        return RedditListing.model_validate(res.json())
 
     def subreddits(
         self,
@@ -74,7 +72,7 @@ class RedditScraper(Client):
             raise ValueError("Limit too high, max 100.")
 
         url = f"https://www.reddit.com/r/{subreddit}/search.json"
-        params = {
+        params: dict[str, str | int | float] = {
             "q": query,
             "limit": limit,
         }
@@ -86,10 +84,48 @@ class RedditScraper(Client):
         if show is not None:
             params["show"] = show
 
-        return self.get(url, params=params)
-
-    def get_post(self, permalink: str) -> dict:
-        url = f"https://www.reddit.com{permalink}.json"
-        res = self.get(url)
+        res = self.get(url, params=params)
         res.raise_for_status()
-        return res.json()
+
+        return RedditListing.model_validate(res.json())
+
+    def comments(
+        self,
+        subreddit: str,
+        article: str,
+        comment: int | None,
+        depth: int | None = None,
+        limit: int | None = None,
+        showedits: bool = False,
+        showmedia: bool = False,
+        showmore: bool = False,
+        threaded: bool = False,
+        sort: Literal["confidence", "top", "new", "controversial", "old", "random", "qa"] = "confidence",
+        theme: Literal["light", "dark"] = "dark",
+    ) -> RedditListing: 
+        url = f"https://www.reddit.com/r/{subreddit}/search.json/{article}"
+        params: dict[str, str | int | float] = {
+            "theme": theme,
+            "sort": sort,
+        }
+
+        if comment is not None:
+            params["comment"] = comment
+        if depth is not None:
+            params["depth"] = depth
+        if limit is not None:
+            params["limit"] = limit
+        if showedits:
+            params["showedits"] = "yes"
+        if showmedia:
+            params["showmedia"] = "yes"
+        if showmore:
+            params["showmore"] = "yes"
+        if threaded:
+            params["threaded"] = "yes"
+
+        res = self.get(url, params=params)
+        res.raise_for_status()
+
+        return RedditListing.model_validate(res.json())
+

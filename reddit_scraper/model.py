@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing_extensions import Literal
+
+from datetime import datetime
 
 from pydantic import BaseModel
+from typing_extensions import Literal
 
 
 class RedditListing(BaseModel):
@@ -19,44 +21,45 @@ class RedditListingData(BaseModel):
 
 class RedditChildren(BaseModel):
     kind: str
-    data: RedditChildrenData
-
-
-class RedditChildrenData(BaseModel):
-    permalink: str
-    title: str
-    author: str
-    subreddit: str
-    subreddit_subscribers: int
-    num_comments: int
-    ups: int
-    downs: int
-    score: int
-    created: int
+    data: (
+        RedditChildrenT1
+        | RedditChildrenT2
+        | RedditChildrenT3
+        | RedditChildrenT4
+        | RedditChildrenT5
+        | RedditChildrenT6
+    )
 
 
 class RedditChildrenT1(BaseModel):
     """Reddit Comment kind."""
+
+    id: str
     title: str
     author: str
     body: str
-    created: str
+    created: datetime
     replies: list[RedditListing]
     ups: int
-    down:int
+    down: int
     score: int
-    total_awards_received: str
+
 
 class RedditChildrenT2(BaseModel):
     """Reddit Account kind."""
 
+    id: str
+
+
 class RedditChildrenT3(BaseModel):
     """Reddit Link (post) kind."""
+
+    id: str
     permalink: str
     title: str
     selftext: str
     ups: int
-    down:int
+    down: int
     score: int
     category: str | None
 
@@ -64,8 +67,16 @@ class RedditChildrenT3(BaseModel):
 class RedditChildrenT4(BaseModel):
     """Reddit Message kind."""
 
+    id: str
+
+
 class RedditChildrenT5(BaseModel):
     """Reddit Subreddit kind."""
 
+    id: str
+
+
 class RedditChildrenT6(BaseModel):
     """Reddit Award kind."""
+
+    id: str

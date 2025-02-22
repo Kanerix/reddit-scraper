@@ -17,6 +17,8 @@ transport = {
     ),
 }
 scraper = RedditScraper(mounts=transport)
+
 for term in SEARCH_TERMS:
-    search_result = scraper.search(SEARCH_TERMS[0], limit=100)
-    pprint(search_result.model_dump())
+    for i in range(100):
+        search_result = scraper.search(SEARCH_TERMS[0], limit=100)
+        pprint(search_result.model_dump())
