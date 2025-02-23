@@ -91,8 +91,7 @@ class RedditScraper(Client):
 
     def comments(
         self,
-        subreddit: str,
-        article: str,
+        permalink: str,
         comment: int | None = None,
         depth: int | None = None,
         limit: int | None = None,
@@ -105,7 +104,7 @@ class RedditScraper(Client):
         ] = "confidence",
         theme: Literal["light", "dark"] = "dark",
     ) -> list[RedditListing]:
-        url = f"https://www.reddit.com/r/Denmark/comments/1dxb6vp/24årig_anholdt_for_at_køre_ræs_inden_dødsulykke/.json"
+        url = f"https://www.reddit.com/r/{permalink}.json"
         params: dict[str, str | int | float] = {
             "theme": theme,
             "sort": sort,

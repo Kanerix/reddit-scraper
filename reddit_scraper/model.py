@@ -51,14 +51,14 @@ class DataT1(BaseModel):
     """Reddit Comment kind."""
 
     id: str
-    # title: str
-    # author: str
-    # body: str
-    # created: datetime
-    # replies: list[RedditListing]
-    # ups: int
-    # down: int
-    # score: int
+
+    subreddit: str
+    subreddit_id: str
+    title: str
+    author: str
+    body: str
+    created: datetime
+    replies: list[RedditListing]
 
 
 class DataT2(BaseModel):
@@ -72,6 +72,20 @@ class DataT3(BaseModel):
 
     id: str
     permalink: str
+
+    title: str
+    author: str
+    num_comments: int
+
+    subreddit: str
+    subreddit_id: str
+    subreddit_subscribers: int
+
+    score: int
+    ups: int
+    downs: int
+
+    created: Annotated[datetime, datetime.fromtimestamp]
 
 
 class DataT4(BaseModel):
@@ -96,6 +110,11 @@ class DataMore(BaseModel):
     """Reddit More kind."""
     
     id: str
+    count: int
+    name: str
+    parent_id: str
+    depth: int
+    children: list[str]
 
 
 RedditChildren = Annotated[
