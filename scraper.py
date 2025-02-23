@@ -19,6 +19,9 @@ transport = {
 scraper = RedditScraper(mounts=transport)
 
 for term in SEARCH_TERMS:
-    for i in range(100):
-        search_result = scraper.search(SEARCH_TERMS[0], limit=100)
-        pprint(search_result.model_dump())
+    for _ in range(100):
+        search = scraper.search(SEARCH_TERMS[0], limit=1)
+        pprint(search)
+        comments = scraper.comments("Denmark", "1dxb6vp/24årig_anholdt_for_at_køre_ræs_inden_dødsulykke", limit=1)
+        pprint(comments)
+        break

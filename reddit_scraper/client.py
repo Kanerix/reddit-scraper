@@ -93,17 +93,19 @@ class RedditScraper(Client):
         self,
         subreddit: str,
         article: str,
-        comment: int | None,
+        comment: int | None = None,
         depth: int | None = None,
         limit: int | None = None,
         showedits: bool = False,
         showmedia: bool = False,
         showmore: bool = False,
         threaded: bool = False,
-        sort: Literal["confidence", "top", "new", "controversial", "old", "random", "qa"] = "confidence",
+        sort: Literal[
+            "confidence", "top", "new", "controversial", "old", "random", "qa"
+        ] = "confidence",
         theme: Literal["light", "dark"] = "dark",
-    ) -> RedditListing: 
-        url = f"https://www.reddit.com/r/{subreddit}/search.json/{article}"
+    ) -> list[RedditListing]:
+        url = f"https://www.reddit.com/r/Denmark/comments/1dxb6vp/24årig_anholdt_for_at_køre_ræs_inden_dødsulykke/.json"
         params: dict[str, str | int | float] = {
             "theme": theme,
             "sort": sort,
@@ -127,5 +129,8 @@ class RedditScraper(Client):
         res = self.get(url, params=params)
         res.raise_for_status()
 
-        return RedditListing.model_validate(res.json())
+        comments: list[RedditListing] = list(
+            map(RedditListing.model_validate, res.json())
+        )
 
+        return comments
