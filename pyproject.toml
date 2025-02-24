@@ -16,6 +16,7 @@ dependencies = [
 dev = [
     "ipykernel>=6,<7",
     "pandas>=2,<3",
+    "pyarrow>=19,<20",
 ]
 
 [build-system]
@@ -26,4 +27,4 @@ build-backend = "hatchling.build"
 package = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["rescrap"]
+packages = ["scrp"]
