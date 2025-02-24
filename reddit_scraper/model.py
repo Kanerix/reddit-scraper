@@ -52,13 +52,25 @@ class DataT1(BaseModel):
 
     id: str
 
+    title: str
+    body: str
+    depth: int
+    replies: list[RedditListing]
+
+    author: str
+    author_flair_type: str
+
     subreddit: str
     subreddit_id: str
-    title: str
-    author: str
-    body: str
-    created: datetime
-    replies: list[RedditListing]
+
+    ups: int
+    downs: int
+    score: int
+    upvote_ratio: float
+    hide_score: bool
+    total_awards_received: int
+
+    created: Annotated[datetime, datetime.fromtimestamp]
 
 
 class DataT2(BaseModel):
@@ -74,16 +86,24 @@ class DataT3(BaseModel):
     permalink: str
 
     title: str
-    author: str
+    selftext: str
+    thumbnail: str
+    category: str | None
     num_comments: int
+
+    author: str
+    author_flair_type: str
 
     subreddit: str
     subreddit_id: str
     subreddit_subscribers: int
 
-    score: int
     ups: int
     downs: int
+    score: int
+    upvote_ratio: float
+    hide_score: bool
+    total_awards_received: int
 
     created: Annotated[datetime, datetime.fromtimestamp]
 
@@ -108,17 +128,26 @@ class DataT6(BaseModel):
 
 class DataMore(BaseModel):
     """Reddit More kind."""
-    
+
     id: str
-    count: int
     name: str
     parent_id: str
+
+    count: int
     depth: int
+
     children: list[str]
 
 
 RedditChildren = Annotated[
-    ChildrenT1 | ChildrenT2 | ChildrenT3 | ChildrenT4 | ChildrenT5 | ChildrenT6 | ChildrenMore, Field(discriminator="kind")
+    ChildrenT1
+    | ChildrenT2
+    | ChildrenT3
+    | ChildrenT4
+    | ChildrenT5
+    | ChildrenT6
+    | ChildrenMore,
+    Field(discriminator="kind"),
 ]
 
 
