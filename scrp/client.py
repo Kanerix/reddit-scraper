@@ -111,7 +111,7 @@ class RedditScraper(Client):
         ] = "confidence",
         theme: Literal["light", "dark"] = "dark",
     ) -> list[RedditListing]:
-        url = f"https://www.reddit.com/r/{permalink}.json"
+        url = f"https://www.reddit.com{permalink}.json"
         params: dict[str, str | int | float] = {
             "theme": theme,
             "sort": sort,

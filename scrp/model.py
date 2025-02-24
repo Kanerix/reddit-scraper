@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing_extensions import Literal
 
 
@@ -51,26 +51,28 @@ class DataT1(BaseModel):
     """Reddit Comment kind."""
 
     id: str
+    name: str
 
-    title: str
     body: str
     depth: int
-    replies: list[RedditListing]
+    replies: RedditListing | None
+    link_id: str
 
     author: str
-    author_flair_type: str
 
     subreddit: str
     subreddit_id: str
 
-    ups: int
-    downs: int
     score: int
-    upvote_ratio: float
-    hide_score: bool
-    total_awards_received: int
 
     created: Annotated[datetime, datetime.fromtimestamp]
+
+    @field_validator('replies', mode='before')
+    @classmethod
+    def validate_replies(cls, value: RedditListing | str):
+        if isinstance(value, str):
+            return None
+        return value
 
 
 class DataT2(BaseModel):
@@ -83,27 +85,22 @@ class DataT3(BaseModel):
     """Reddit Link (post) kind."""
 
     id: str
+    name: str
     permalink: str
 
     title: str
     selftext: str
     thumbnail: str
-    category: str | None
     num_comments: int
 
     author: str
-    author_flair_type: str
 
     subreddit: str
     subreddit_id: str
     subreddit_subscribers: int
 
-    ups: int
-    downs: int
     score: int
     upvote_ratio: float
-    hide_score: bool
-    total_awards_received: int
 
     created: Annotated[datetime, datetime.fromtimestamp]
 
