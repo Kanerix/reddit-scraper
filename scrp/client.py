@@ -2,8 +2,8 @@ from typing import Literal, override
 
 from httpx import Client
 
-from reddit_scraper.agents import get_agent
-from reddit_scraper.model import RedditListing
+from scrp.agents import get_agent
+from scrp.model import RedditListing
 
 
 class RedditScraper(Client):

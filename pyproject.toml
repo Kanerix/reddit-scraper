@@ -1,5 +1,5 @@
 [project]
-name = "redis-scraper"
+name = "scrp"
 version = "0.1.0"
 description = "Reddit scraper."
 readme = "README.md"
@@ -16,5 +16,14 @@ dependencies = [
 dev = [
     "ipykernel>=6,<7",
     "pandas>=2,<3",
-    "pyarrow>=19,<20",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["rescrap"]
