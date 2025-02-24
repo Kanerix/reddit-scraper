@@ -54,8 +54,7 @@ class RedditScraper(Client):
 
         res = self.get(url, params=params)
         if res.status_code == 429:
-            print(res.headers)
-            raise RateLimitError(res.status_code, res.headers.get("Retry-After"))
+            raise RateLimitError(res.status_code, res.headers.get("x-ratelimit-reset"))
 
         res.raise_for_status()
 
@@ -90,7 +89,7 @@ class RedditScraper(Client):
 
         res = self.get(url, params=params)
         if res.status_code == 429:
-            raise RateLimitError(res.status_code, res.headers.get("Retry-After"))
+            raise RateLimitError(res.status_code, res.headers.get("x-ratelimit-reset"))
 
         res.raise_for_status()
 
@@ -134,7 +133,7 @@ class RedditScraper(Client):
 
         res = self.get(url, params=params)
         if res.status_code == 429:
-            raise RateLimitError(res.status_code, res.headers.get("Retry-After"))
+            raise RateLimitError(res.status_code, res.headers.get("x-ratelimit-reset"))
 
         res.raise_for_status()
 
