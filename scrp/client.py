@@ -53,6 +53,10 @@ class RedditScraper(Client):
             params["show"] = show
 
         res = self.get(url, params=params)
+        if res.status_code == 429:
+            print(res.headers)
+            raise RateLimitError(res.status_code, res.headers.get("Retry-After"))
+
         res.raise_for_status()
 
         return RedditListing.model_validate(res.json())
@@ -85,6 +89,9 @@ class RedditScraper(Client):
             params["show"] = show
 
         res = self.get(url, params=params)
+        if res.status_code == 429:
+            raise RateLimitError(res.status_code, res.headers.get("Retry-After"))
+
         res.raise_for_status()
 
         return RedditListing.model_validate(res.json())
@@ -126,6 +133,9 @@ class RedditScraper(Client):
             params["threaded"] = "yes"
 
         res = self.get(url, params=params)
+        if res.status_code == 429:
+            raise RateLimitError(res.status_code, res.headers.get("Retry-After"))
+
         res.raise_for_status()
 
         comments: list[RedditListing] = list(
@@ -133,3 +143,10 @@ class RedditScraper(Client):
         )
 
         return comments
+
+
+class RateLimitError(Exception):
+    def __init__(self, status_code: int, retry_after: str | None):
+        self.status_code = status_code
+        self.retry_after = int(retry_after) if retry_after else None
+        super().__init__(f"Rate limit exceeded, retry after {retry_after} seconds.")
