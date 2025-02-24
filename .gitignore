@@ -13,7 +13,7 @@ wheels/
 .venv
 
 # Jupyter Notebook custom output
-output/**
+output
 
 # Do not ignore
 !.gitkeep
