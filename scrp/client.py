@@ -21,9 +21,12 @@ class RedditScraper(Client):
     ) -> Response:
         res = self.get(url, params=params)
 
+        if res.is_error:
+            print(f"API returned error: {res.status_code}")
+
         if res.status_code == 429:
             if delay := res.headers.get("x-ratelimit-reset"):
-                sleep(delay)
+                sleep(int(delay))
             else:
                 sleep(60)
 
