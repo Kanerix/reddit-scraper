@@ -10,6 +10,7 @@ dependencies = [
     "pydantic==2.10.*",
     "requests==2.32.*",
     "swiftshadow==2.1.*",
+    "tenacity>=9.0.0",
 ]
 
 [dependency-groups]

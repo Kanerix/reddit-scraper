@@ -1,6 +1,7 @@
+from time import sleep
 from typing import Literal, override
 
-from httpx import Client
+from httpx import Client, Response
 
 from scrp.agents import get_agent
 from scrp.model import RedditListing
@@ -14,6 +15,19 @@ class RedditScraper(Client):
         """Random user agent for each request."""
         self.headers.update({"User-Agent": get_agent()})
         return super().request(*args, **kwargs)
+
+    def _handle_request(
+        self, url: str, params: dict[str, str | int | float]
+    ) -> Response:
+        res = self.get(url, params=params)
+
+        if res.status_code == 429:
+            if delay := res.headers.get("x-ratelimit-reset"):
+                sleep(delay)
+            else:
+                sleep(60)
+
+        return res
 
     def search(
         self,
@@ -52,12 +66,7 @@ class RedditScraper(Client):
         if show is not None:
             params["show"] = show
 
-        res = self.get(url, params=params)
-        if res.status_code == 429:
-            raise RateLimitError(res.status_code, res.headers.get("x-ratelimit-reset"))
-
-        res.raise_for_status()
-
+        res = self._handle_request(url, params=params).raise_for_status()
         return RedditListing.model_validate(res.json())
 
     def subreddits(
@@ -87,12 +96,7 @@ class RedditScraper(Client):
         if show is not None:
             params["show"] = show
 
-        res = self.get(url, params=params)
-        if res.status_code == 429:
-            raise RateLimitError(res.status_code, res.headers.get("x-ratelimit-reset"))
-
-        res.raise_for_status()
-
+        res = self._handle_request(url, params=params)
         return RedditListing.model_validate(res.json())
 
     def comments(
@@ -131,21 +135,6 @@ class RedditScraper(Client):
         if threaded:
             params["threaded"] = "yes"
 
-        res = self.get(url, params=params)
-        if res.status_code == 429:
-            raise RateLimitError(res.status_code, res.headers.get("x-ratelimit-reset"))
-
-        res.raise_for_status()
-
-        comments: list[RedditListing] = list(
-            map(RedditListing.model_validate, res.json())
-        )
-
+        res = self._handle_request(url, params=params).raise_for_status()
+        comments = list(map(RedditListing.model_validate, res.json()))
         return comments
-
-
-class RateLimitError(Exception):
-    def __init__(self, status_code: int, retry_after: str | None):
-        self.status_code = status_code
-        self.retry_after = int(retry_after) if retry_after else None
-        super().__init__(f"Rate limit exceeded, retry after {retry_after} seconds.")

@@ -788,6 +788,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "requests" },
     { name = "swiftshadow" },
+    { name = "tenacity" },
 ]
 
 [package.dev-dependencies]
@@ -804,6 +805,7 @@ requires-dist = [
     { name = "pydantic", specifier = "==2.10.*" },
     { name = "requests", specifier = "==2.32.*" },
     { name = "swiftshadow", specifier = "==2.1.*" },
+    { name = "tenacity", specifier = ">=9.0.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -858,6 +860,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6d/55/39a5f2163a5bac8ec716e5bad3cbe86ff35a44e56ba5ce814c301a9f3dfc/swiftshadow-2.1.0.tar.gz", hash = "sha256:85d0de8dee7ebd94e9854858ff3f406f8d598044de53a74e92ddbdc82dab4e06", size = 1179344 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/69/58/0bfe6abe9ddb5120347f2031a4bb06ee3f533b4a3631f2a226c99984e31c/swiftshadow-2.1.0-py3-none-any.whl", hash = "sha256:8d7c9fe6f72d49960cee478bf29169591b7f3f05a5e5cc473b36022f19ae696e", size = 23433 },
+]
+
+[[package]]
+name = "tenacity"
+version = "9.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cd/94/91fccdb4b8110642462e653d5dcb27e7b674742ad68efd146367da7bdb10/tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b", size = 47421 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539", size = 28169 },
 ]
 
 [[package]]
