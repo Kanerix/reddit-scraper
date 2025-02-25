@@ -11,37 +11,37 @@ class RedditListing(BaseModel):
     data: RedditListingData
 
 
-class ChildrenT1(BaseModel):
+class ChildT1(BaseModel):
     kind: Literal["t1"]
     data: DataT1
 
 
-class ChildrenT2(BaseModel):
+class ChildT2(BaseModel):
     kind: Literal["t2"]
     data: DataT2
 
 
-class ChildrenT3(BaseModel):
+class ChildT3(BaseModel):
     kind: Literal["t3"]
     data: DataT3
 
 
-class ChildrenT4(BaseModel):
+class ChildT4(BaseModel):
     kind: Literal["t4"]
     data: DataT3
 
 
-class ChildrenT5(BaseModel):
+class ChildT5(BaseModel):
     kind: Literal["t5"]
     data: DataT3
 
 
-class ChildrenT6(BaseModel):
+class ChildT6(BaseModel):
     kind: Literal["t6"]
     data: DataT3
 
 
-class ChildrenMore(BaseModel):
+class ChildMore(BaseModel):
     kind: Literal["more"]
     data: DataMore
 
@@ -53,9 +53,10 @@ class DataT1(BaseModel):
     name: str
 
     body: str
+    link_id: str
+    parent_id: str
     depth: int
     replies: RedditListing | None
-    link_id: str
 
     author: str
 
@@ -66,7 +67,7 @@ class DataT1(BaseModel):
 
     created: Annotated[datetime, datetime.fromtimestamp]
 
-    @field_validator('replies', mode='before')
+    @field_validator("replies", mode="before")
     @classmethod
     def validate_replies(cls, value: RedditListing | str):
         if isinstance(value, str):
@@ -135,14 +136,14 @@ class DataMore(BaseModel):
     children: list[str]
 
 
-RedditChildren = Annotated[
-    ChildrenT1
-    | ChildrenT2
-    | ChildrenT3
-    | ChildrenT4
-    | ChildrenT5
-    | ChildrenT6
-    | ChildrenMore,
+RedditChild = Annotated[
+    ChildT1
+    | ChildT2
+    | ChildT3
+    | ChildT4
+    | ChildT5
+    | ChildT6
+    | ChildMore,
     Field(discriminator="kind"),
 ]
 
@@ -153,4 +154,4 @@ class RedditListingData(BaseModel):
     after: str | None
     before: str | None
     # The actual data
-    children: list[RedditChildren]
+    children: list[RedditChild]
